@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Projekt Orange – Besucherlenkung Graubünden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Ersatz für die Markenschrift TheMix, solange keine lizenzierte Webfont eingebunden ist -->
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=15">
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-in">
+    <div>
+      <p class="kicker">Projekt Orange</p>
+      <h1>Besucherlenkung Graubünden</h1>
+      <p class="sample">Prototyp mit erfundenen Beispieldaten für den Sommer 2026. Bewertet werden nur Spitzentage (Wochenende, schönes Wetter).</p>
+    </div>
+    <a class="head-link" href="faq.html">FAQ: So funktioniert es →</a>
+  </div>
+</header>
+
+<nav class="controls" aria-label="Thema und Spitzentag">
+  <div class="controls-in">
+    <div class="themes" role="group" aria-label="Thema" id="themes"></div>
+    <div class="time">
+      <div class="time-row"><span class="day" id="day">—</span><span id="stand"></span></div>
+      <input class="slider" id="slider" type="range" min="0" max="0" step="1" value="0" aria-label="Spitzentag wählen">
+      <div class="wx-row" id="wxrow"></div>
+      <div class="time-row wx-label"><span id="wxlabel"></span><span>blass = Prognose</span></div>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <p class="lead take" id="take">Daten werden geladen …</p>
+  <div class="kpis" id="kpis" aria-label="Budget-Übersicht"></div>
+
+  <div class="grid">
+    <section class="card" id="karte">
+      <h2>Ampel pro Attraktion</h2>
+      <p class="note">Auslastung am gewählten Spitzentag. Klick auf einen Punkt zeigt Details und Fieberkurve.</p>
+      <div class="map" id="map"></div>
+      <div class="legend">
+        <span><i class="dot ok"></i>grün</span><span><i class="dot warn"></i>orange</span><span><i class="dot bad"></i>rot</span><span class="src">Grenzen: swisstopo</span>
+      </div>
+      <div class="tip" id="maptip" hidden></div>
+    </section>
+
+    <section class="card" id="ort">
+      <div class="detail-head">
+        <h2 id="o-name">—</h2>
+        <span class="status"><i class="dot" id="o-dot"></i><span id="o-status">—</span></span>
+      </div>
+      <p class="note" id="o-meta">—</p>
+      <div><span class="big" id="o-pct">—</span><span class="big"> %</span> <span class="note inline">der Kapazität</span></div>
+      <dl class="kv">
+        <dt>Messwert</dt><dd id="o-mess">—</dd>
+        <dt>Datenquelle</dt><dd id="o-quelle">—</dd>
+        <dt>Schwellen</dt><dd id="o-schwellen">—</dd>
+      </dl>
+      <div class="wx">
+        <h3>Wetter am gewählten Tag</h3>
+        <div class="wx-now" id="o-wx"></div>
+        <h3>Prognose nächste Spitzentage</h3>
+        <table class="wx-prog"><tbody id="o-prog"></tbody></table>
+      </div>
+      <div class="camp">
+        <div><h3>Paid</h3><div id="c-paid"></div></div>
+        <div><h3>Owned</h3><div id="c-owned"></div></div>
+      </div>
+      <div class="sub">
+        <h3>Substitutionskette</h3>
+        <div class="chain" id="chain"></div>
+        <div class="verdict" id="verdict"></div>
+      </div>
+    </section>
+  </div>
+
+  <details class="card fold" id="lenkung">
+    <summary><h2>Substitutionsketten und Budgetfluss</h2></summary>
+    <p class="note">Jede Linie ist ein Glied der Substitutionskette, von links (Ausgangspunkt) nach rechts. Wird Paid an einem Ort gestoppt, wandert das Budget die Kette entlang bis zum ersten grünen Ort (blauer Pfeil). Ist kein Ort der Kette grün, wird nichts umgeleitet. Klick auf einen Ort wählt ihn aus.</p>
+    <div id="fluss"></div>
+    <div class="fluss-legende">
+      <span><svg width="28" height="8" aria-hidden="true"><line x1="0" y1="4" x2="28" y2="4" stroke="var(--chart-muted)" stroke-width="1.5"/></svg>Substitutionskette</span>
+      <span><svg width="28" height="8" aria-hidden="true"><line x1="0" y1="4" x2="28" y2="4" stroke="var(--flow)" stroke-width="3"/></svg>Budget fliesst an diesem Tag</span>
+      <span><i class="dot ok"></i>grün</span><span><i class="dot warn"></i>orange</span><span><i class="dot bad"></i>rot</span>
+    </div>
+  </details>
+
+  <section class="card" id="fieberkurve">
+    <h2>Fieberkurve <span id="f-name"></span></h2>
+    <p class="note">Auslastung an Spitzentagen mit Schwellen. Dreiecke oben markieren Paid-Entscheide, Kreise Owned-Entscheide. Weitere Linien: die Substitute. Ein Klick auf eine Linie oder einen Namen hebt sie hervor.</p>
+    <div class="vergleich" id="vergleich"></div>
+    <div class="curve" id="curve"></div>
+    <div class="tip" id="curvetip" hidden></div>
+  </section>
+
+  <div class="grid">
+    <section class="card" id="kampagnen">
+      <h2>Kampagnen am gewählten Tag</h2>
+      <p class="note">Aktueller Stand jeder Kampagne. Gestoppte Kampagnen zeigen, wohin das Budget umgeleitet wurde.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Ort</th><th>Art</th><th>Status</th><th class="r">CHF/Woche</th><th class="hide-sm">Seit</th><th class="hide-sm">Grund</th></tr></thead>
+          <tbody id="ktable"></tbody>
+        </table>
+      </div>
+    </section>
+    <section class="card" id="verlauf">
+      <h2>Steuerungsverlauf <span id="v-name"></span></h2>
+      <p class="note">Alle Entscheide für diesen Ort in der Saison. Ausgegraut: nach dem gewählten Tag. „Simulation“: was die Regeln an Prognosetagen entscheiden würden.</p>
+      <p class="pruefung" id="pruefung"></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Datum</th><th>Art</th><th>Status</th><th class="r">CHF/Woche</th><th>Grund</th></tr></thead>
+          <tbody id="vtable"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="js/regeln.js?v=15"></script>
+<script src="js/lenkungsfluss.js?v=15"></script>
+<script src="js/app.js?v=15"></script>
+</body>
+</html>

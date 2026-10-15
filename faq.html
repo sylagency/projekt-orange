@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>FAQ – Projekt Orange</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Ersatz für die Markenschrift TheMix, solange keine lizenzierte Webfont eingebunden ist -->
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=15">
+</head>
+<body class="faq-page">
+<header class="masthead">
+  <div class="masthead-in">
+    <div>
+      <p class="kicker">Projekt Orange</p>
+      <h1>Besucherlenkung Graubünden: FAQ</h1>
+      <p class="sample">Wie das Dashboard funktioniert, nach welchen Regeln das Budget gesteuert wird und was es für den Echtbetrieb braucht.</p>
+    </div>
+    <a class="head-link" href="index.html">← Zum Dashboard</a>
+  </div>
+</header>
+
+<nav class="controls" aria-label="Themen der FAQ">
+  <div class="controls-in">
+    <div class="themes">
+      <a class="chip" href="#grundlagen">Grundlagen</a>
+      <a class="chip" href="#steuerung">Steuerung</a>
+      <a class="chip" href="#bedienung">Dashboard lesen</a>
+      <a class="chip" href="#prognose">Prognose und Wetter</a>
+      <a class="chip" href="#betrieb">Daten und Betrieb</a>
+    </div>
+    <button class="chip faq-toggle" type="button" id="alle">Alle aufklappen</button>
+  </div>
+</nav>
+
+<main class="page faq">
+
+  <section id="grundlagen">
+    <h2>Grundlagen</h2>
+
+    <details class="card fold">
+      <summary><h3>Was zeigt das Dashboard?</h3></summary>
+      <p>Wie voll beliebte Ausflugsziele in Graubünden an Spitzentagen sind, welche Kampagnen dafür laufen, reduziert oder gestoppt wurden, und wohin das Werbebudget umgeleitet wird. Ziel ist, Gäste von überlasteten Orten zu gleichwertigen Alternativen zu lenken, statt die Überlastung mit Werbung noch zu verstärken.</p>
+      <p>Der Prototyp arbeitet mit <strong>erfundenen Beispieldaten</strong> für den Sommer 2026: 11 Orte in den Themen Bergsee, Schlucht und Wellness.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Was ist ein Spitzentag?</h3></summary>
+      <p>Ein Wochenende oder Feiertag mit schönem Wetter. Nur an diesen Tagen wird bewertet, denn an gewöhnlichen Tagen sagt die Auslastung nichts über eine Überlastung aus. Im Zeitregler stehen deshalb nur Spitzentage.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Wie wird die Ampel berechnet?</h3></summary>
+      <p>Die Auslastung ist der Messwert geteilt durch die Kapazität des Ortes, etwa 274 von 380 Parkplätzen = 72 %. Jeder Ort hat zwei Schwellen:</p>
+      <ul>
+        <li><span class="pill"><i class="dot ok"></i>grün</span> unter der Orange-Schwelle (meist 60 %)</li>
+        <li><span class="pill"><i class="dot warn"></i>orange</span> ab der Orange-Schwelle</li>
+        <li><span class="pill"><i class="dot bad"></i>rot</span> ab der Rot-Schwelle (85 %, bei Thermen 90 %)</li>
+      </ul>
+      <p>Fehlen Daten oder ist der Wert unplausibel, erscheint der Ort <span class="pill"><i class="dot"></i>grau</span>, nie grün. Was dann passiert, steht unter <a href="#grau">Was passiert bei grau?</a></p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Warum ist orange das Ziel?</h3></summary>
+      <p>Orange heisst: ausgelastet, aber nicht überlastet. Grün bedeutet ungenutztes Potenzial, rot bedeutet Stau, volle Parkplätze und unzufriedene Gäste. Die Steuerung versucht, möglichst viele Orte in orange zu halten.</p>
+    </details>
+  </section>
+
+  <section id="steuerung">
+    <h2>Steuerung</h2>
+
+    <details class="card fold">
+      <summary><h3>Wann wird Paid gestoppt, reduziert oder hochgefahren?</h3></summary>
+      <p>Die Regeln werden nach jedem Spitzentag angewendet. Grundsatz: <strong>schnell bremsen, langsam Gas geben</strong>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Lage an den letzten Spitzentagen</th><th>Paid (bezahlte Werbung)</th><th>Owned (eigene Kanäle)</th></tr></thead>
+          <tbody>
+            <tr><td>grün</td><td>halten</td><td>aktiv</td></tr>
+            <tr><td>2× grün hintereinander</td><td>hochfahren, zurück aufs Saisonstart-Budget (nie darüber)</td><td>aktiv</td></tr>
+            <tr><td>orange</td><td>halten oder reduzieren</td><td>aktiv</td></tr>
+            <tr><td>2× orange mit steigender Tendenz</td><td>stoppen</td><td>aktiv</td></tr>
+            <tr><td>1× rot</td><td>sofort stoppen</td><td>pausieren</td></tr>
+            <tr><td>nach rot wieder orange</td><td>gestoppt lassen</td><td>wieder aktiv</td></tr>
+            <tr><td>nach Stopp 2× grün</td><td>mit halbem Budget wieder aufnehmen</td><td>aktiv</td></tr>
+            <tr><td>danach grün</td><td>volles Budget zurück</td><td>aktiv</td></tr>
+            <tr><td>grau (keine gültigen Daten)</td><td>letzten Entscheid halten</td><td>unverändert</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details class="card fold" open>
+      <summary><h3>Wann und wie lange wird das Budget gestoppt bzw. weitergegeben?</h3></summary>
+      <figure class="faq-fig">
+        <img src="docs/budgetregeln.svg" width="680" height="640" alt="Flussdiagramm: Nach jedem Spitzentag wird die Ampel geprüft. Grün zweimal: hochfahren. Orange: halten oder reduzieren, zweimal steigend: stoppen. Rot einmal: sofort stoppen. Bei einem Stopp wandert das Budget die Substitutionskette entlang, der erste grüne Ort erhält drei Viertel davon. Der Stopp gilt, bis der Ort zweimal grün ist.">
+      </figure>
+      <ul>
+        <li><strong>Wann:</strong> 1× rot stoppt sofort, bei orange erst nach zwei Spitzentagen mit steigender Tendenz.</li>
+        <li><strong>Wohin:</strong> zum ersten grünen Ort der Substitutionskette. Er erhält drei Viertel davon (siehe <a href="#anteil">Warum erhält das Substitut nur drei Viertel?</a>).</li>
+        <li><strong>Wie lange:</strong> solange Paid am Ausgangsort gestoppt ist. Wieder aufgenommen wird erst nach 2× grün hintereinander; ein einzelner ruhiger Tag reicht nicht.</li>
+        <li><strong>Zurück:</strong> in zwei Stufen, zuerst das halbe, dann das volle Budget (siehe <a href="#rueckgabe">Wie kommt das Budget zurück?</a>).</li>
+      </ul>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Was ist eine Substitutionskette?</h3></summary>
+      <p>Jeder Ort kennt einen gleichwertigen Ersatzort zum gleichen Thema, sein <em>Substitut</em>. Dieser hat wieder ein Substitut, und so weiter. So entstehen Ketten von bekannten, schnell vollen Orten zu weniger bekannten:</p>
+      <ul>
+        <li>Heidsee → Lai da Marmorera → Lag da Breil</li>
+        <li>Lai da Palpuogna → Lago di Poschiavo → Lago Bianco (Berninapass)</li>
+        <li>Therme Vals → Mineralbad Andeer → Bogn Engiadina</li>
+        <li>Viamala-Schlucht → Rofflaschlucht</li>
+      </ul>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Wohin fliesst das Budget bei einem Stopp?</h3></summary>
+      <p>Es wandert die Kette entlang bis zum ersten Ort, der grün ist, notfalls bis zum letzten Ort der Kette. Orte unterwegs, die selbst orange oder rot sind, <strong>geben weiter</strong>.</p>
+      <p>Beispiel 9. August: Heidsee ist gestoppt. Marmorera ist selbst orange und gibt weiter, Lag da Breil ist grün und erhält 75 % des Heidsee-Budgets, also CHF 1’130 statt 1’500 pro Woche. Wäre auch Breil voll, gäbe es kein weiteres Substitut, und das Budget würde ruhen.</p>
+      <p>Das Budget bleibt beim Empfänger, bis dieser selbst gestoppt wird; dann wandert es weiter, zusammen mit seinem eigenen. Für Empfänger gelten dieselben Regeln wie für alle Orte: Wird ein Empfänger orange, halbiert sich sein Paid.</p>
+    </details>
+
+    <details class="card fold" id="grau">
+      <summary><h3>Was passiert bei grau?</h3></summary>
+      <p>Grau heisst: Für diesen Ort und Tag gibt es keinen gültigen Messwert. Entweder fehlen die Daten, oder der Wert ist unplausibel, etwa null an einem Spitzentag oder mehr als die Kapazität. Ein Datenloch ist kein Zeichen für Überlastung, aber auch keines für freie Kapazität. Deshalb gilt:</p>
+      <ul>
+        <li><strong>Letzten Entscheid halten:</strong> Paid und Owned bleiben, wie sie waren. Gestoppt bleibt gestoppt, hochgefahren wird nicht.</li>
+        <li><strong>Grau unterbricht die Zählung:</strong> „2× grün hintereinander“ und „2× orange steigend“ beginnen nach einem grauen Tag von vorn. So löst ein Datenloch weder einen Neustart noch einen Stopp aus.</li>
+        <li><strong>Kein Budget an graue Orte:</strong> Als Substitut wird ein grauer Ort nie wie grün behandelt. Er gibt das Budget an den nächsten Ort der Kette weiter.</li>
+        <li><strong>Ab 2× grau hintereinander: Alarm</strong> an die Destination und an Graubünden Ferien, mit dem Grund, zum Beispiel „keine Daten“ oder „unplausibel: 0 Fahrzeuge“. Die Werbung wird dabei nicht automatisch gestoppt.</li>
+      </ul>
+      <p>Im Dashboard ist der Ort grau, statt einer Zahl steht „keine Daten“ bzw. „—“, und in der Fieberkurve fehlt der Tag.</p>
+    </details>
+
+    <details class="card fold" id="rueckgabe">
+      <summary><h3>Wie kommt das Budget zurück?</h3></summary>
+      <p>In zwei Stufen, nach dem Grundsatz „schnell bremsen, langsam Gas geben“:</p>
+      <ol>
+        <li><strong>Nach 2× grün:</strong> Der Ausgangsort startet mit halbem Budget (Stufe „reduziert“). Der Empfänger behält die Hälfte seines Übernahme-Betrags.</li>
+        <li><strong>Am nächsten grünen Spitzentag:</strong> Der Ausgangsort erhält das volle Budget zurück, der Empfänger fällt auf sein eigenes Budget zurück. Ist der Tag orange, bleibt es beim halben Budget, wie bei jedem orangen Ort.</li>
+      </ol>
+      <p>Wird der Ausgangsort dazwischen rot, wird sofort wieder gestoppt und das Budget wandert wieder die Kette entlang.</p>
+      <p><strong>Warum nicht auf einen Schlag?</strong> Das Risiko liegt beim Ausgangsort: Er war eben noch voll. Mit dem ganzen Budget auf einmal kippt er leicht wieder in Rot, und das Budget pendelt hin und her. Für den Empfänger ist die Rückgabe unkritisch, weil weniger Werbung an einem grünen Ort keine Überlastung auslöst.</p>
+    </details>
+
+    <details class="card fold" id="anteil">
+      <summary><h3>Warum erhält das Substitut nur drei Viertel?</h3></summary>
+      <p>Substitute sind fast immer kleinere Destinationen als der Ort, den sie entlasten. Das volle Budget eines grossen Ortes würde einen kleinen Ort selbst schnell an die Grenze bringen und das Problem nur verschieben. Deshalb erhält der Empfänger standardmässig <strong>75 %</strong> des gestoppten Budgets. Der Rest wird nicht ausgegeben.</p>
+      <ul>
+        <li><strong>Bei sehr kleinen Orten</strong> kann der Anteil auf <strong>25–50 %</strong> gesenkt werden. Im Prototyp gilt das für Lago Bianco und Rofflaschlucht (je 50 %): Die Viamala-Schlucht stoppt CHF 1’000, die Rofflaschlucht erhält CHF 500.</li>
+        <li><strong>Festgelegt wird der Anteil zu Beginn der Saison</strong>, pro Ort, zusammen mit Kapazität und Schwellen.</li>
+        <li><strong>Massgebend ist der Anteil des Ortes, der das Budget am Ende erhält.</strong> Orte, die nur weitergeben, kürzen nichts. Gibt Marmorera das Heidsee-Budget an Breil weiter, erhält Breil 75 % des ursprünglichen Heidsee-Budgets, nicht 75 % von 75 %.</li>
+        <li>Ausgangspunkt ist das zuletzt laufende Budget, also bei einem vorher reduzierten Ort das reduzierte.</li>
+      </ul>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Was passiert, wenn kein Ort der Kette grün ist?</h3></summary>
+      <p>Dann wird nichts umgeleitet. Das Budget ruht, bis wieder ein Ort Kapazität hat. Das ist die Situation in der Hochsaison.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Was passiert mit den eigenen Kanälen (Owned)?</h3></summary>
+      <p>Owned (Instagram, Web, Newsletter) kostet kein Budget und läuft normalerweise weiter. Es pausiert nur bei rot und läuft wieder, sobald der Ort wieder orange ist, auch wenn Paid dann noch gestoppt ist. So hängt jede Regel an einer Ampelfarbe.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Wer trifft die Entscheide?</h3></summary>
+      <p>Die Regeln sind als Programm hinterlegt (<code>js/regeln.js</code>), genau so, wie sie in dieser FAQ stehen. Daraus entstehen die Entscheide; niemand trägt sie von Hand ein.</p><ul><li><strong>Regelprüfung:</strong> Das Dashboard rechnet die Regeln bei jedem Laden nach und vergleicht sie mit den gespeicherten Entscheiden. Unter „Steuerungsverlauf“ steht, ob alles stimmt, oder welche Entscheide abweichen.</li><li><strong>Simulation:</strong> Für die Prognosetage zeigt das Dashboard, was die Regeln entscheiden würden, gekennzeichnet mit „Simulation“.</li><li><strong>Echtbetrieb:</strong> Derselbe Code läuft auf dem Server nach jedem Spitzentag und schreibt die Entscheide, idealerweise direkt mit Anbindung an die Werbekonten.</li></ul>
+    </details>
+  </section>
+
+  <section id="bedienung">
+    <h2>Dashboard lesen</h2>
+
+    <details class="card fold">
+      <summary><h3>Wie bediene ich Themen und Zeitregler?</h3></summary>
+      <p>Im roten Balken wählst du das Thema und mit dem Regler den Spitzentag. Unter dem Regler steht das Wetter des gewählten Ortes für jeden Spitzentag; blasse Symbole sind Prognosen. „Stand“ ist der letzte Tag mit gemessenen Werten.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Was bedeuten die vier Zahlen oben?</h3></summary>
+      <p>Die Budget-Übersicht für den gewählten Tag und das gewählte Thema:</p>
+      <ul>
+        <li><strong>Paid im Einsatz:</strong> Summe aller laufenden Paid-Kampagnen pro Woche.</li>
+        <li><strong>davon bei Substituten:</strong> der Teil, der von gestoppten Orten umgeleitet wurde.</li>
+        <li><strong>ruht:</strong> Budget gestoppter Orte, das nicht ausgegeben wird: das Viertel, das Substitute nicht übernehmen, und ganze Budgets, wenn kein Ort der Kette grün ist.</li>
+        <li><strong>Orte im Ziel:</strong> wie viele Orte orange sind, also ausgelastet, aber nicht überlastet.</li>
+      </ul>
+      <p>An Prognosetagen sind die Zahlen eine Simulation der Regeln.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Was zeigt die Karte?</h3></summary>
+      <p>Jeder Punkt ist ein Ort in seiner Ampelfarbe am gewählten Tag. Ein Klick wählt den Ort für die Detailansicht und die Fieberkurve. Orte ausserhalb des gewählten Themas sind blass. Kantons- und Landesgrenze stammen von swisstopo.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Was zeigt die Detailansicht?</h3></summary>
+      <ul>
+        <li>Auslastung, Messwert, Datenquelle und Schwellen des Ortes</li>
+        <li>Wetter am gewählten Tag und eine Prognosetabelle der nächsten Spitzentage</li>
+        <li>Stand von Paid und Owned mit Budget und Grund</li>
+        <li>Die Substitutionskette in Sätzen, etwa „1. Marmorera ist selbst orange, gibt weiter. 2. Breil ist grün und erhält 75 % des Budgets.“ Orte nach dem Empfänger „warten auf Budget“: Sie kommen erst zum Zug, wenn der Empfänger selbst gestoppt wird.</li>
+      </ul>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Was zeigt „Substitutionsketten und Budgetfluss“?</h3></summary>
+      <p>Den aufklappbaren Überblick über alle Ketten. Graue Linien sind die Ketten, blaue Pfeile zeigen, wohin das Budget am gewählten Tag tatsächlich fliesst. Orte, die nur durchreichen, tragen den Hinweis „gibt Budget weiter →“. Ein Klick auf einen Ort hebt seine Kette hervor.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Wie lese ich die Fieberkurve?</h3></summary>
+      <ul>
+        <li>Die dunkle Linie ist die Auslastung des Ortes über die Saison, mit den Bändern grün, orange und rot.</li>
+        <li>Die weiteren Linien sind alle Orte seiner Substitutionskette. Hervorgehoben ist der Ort, der gerade das Budget erhält; per Klick lässt sich ein anderer wählen.</li>
+        <li>Dreiecke oben sind Paid-Entscheide, Kreise Owned-Entscheide, jeweils in der Farbe des Status.</li>
+        <li>Rechts der gepunkteten Linie beginnt die Prognose (gestrichelt).</li>
+        <li>Unten steht das Wetter pro Spitzentag. Fährst du mit der Maus über die Kurve, erscheinen alle Werte des Tages.</li>
+      </ul>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Kann ich eine Ansicht teilen?</h3></summary>
+      <p>Ja. Tag, Thema und Ort stehen in der Adresse, etwa <code>index.html#datum=2026-08-09&amp;thema=alle&amp;ort=heidsee</code>. Den Link einfach kopieren. Ein Wechsel von Ort oder Thema lässt sich mit dem Zurück-Knopf des Browsers rückgängig machen; das Ziehen am Zeitregler nicht, damit der Verlauf nicht mit jedem Tag vollläuft.</p>
+    </details>
+  </section>
+
+  <section id="prognose">
+    <h2>Prognose und Wetter</h2>
+
+    <details class="card fold">
+      <summary><h3>Wie entsteht die Prognose?</h3></summary>
+      <p>Im Prototyp sind die Prognosen erfunden. Für den Echtbetrieb braucht es einen Prognose-Dienst, der jeden Morgen die Auslastung pro Ort für die kommenden Spitzentage schätzt, etwa 10 Tage voraus.</p>
+      <p><strong>Eingangsdaten:</strong> gemessene Auslastung früherer Spitzentage, Wetterprognose, Schulferien und Feiertage, der Trend der letzten Tage und der Kampagnenstand; optional Events, Logiernächte und Verkehr.</p>
+      <p><strong>Zwei Stufen:</strong></p>
+      <ol>
+        <li>Ab Start: Durchschnitt vergleichbarer früherer Spitzentage mit ähnlichem Wetter, plus Zuschläge für Ferien und Trend. Funktioniert ab einer Saison Daten und ist nachvollziehbar.</li>
+        <li>Ab etwa zwei Saisons: ein statistisches Modell, das eine Bandbreite liefert, etwa „68–82 %, Wahrscheinlichkeit rot 30 %“.</li>
+      </ol>
+      <p>Nach dem Tag ersetzt der Messwert die Prognose. Wie gut die Prognose trifft, wird pro Ort laufend gemessen.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Steuert die Prognose schon mit?</h3></summary>
+      <p>Nein. Die Regeln steuern nur nach gemessenen Werten. Empfehlung: die Prognose zuerst nur anzeigen und erst nach einer Saison mit guter Trefferquote als Frühwarnung einsetzen, etwa „Prognose rot → Paid vorsorglich reduzieren“. Werbung wirkt mit Verzögerung, deshalb lohnt sich das.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Woher kommt das Wetter?</h3></summary>
+      <p>Im Prototyp ist es erfunden und passend zur Auslastung gewählt: Bei Bergseen und Schluchten sind die schwächeren Tage wechselhaft, bei Thermen die starken Tage verregnet. Die Temperatur hängt von Höhe und Region ab. Im Echtbetrieb kommen Prognosen und Messwerte von MeteoSchweiz (Open Government Data); Alternativen sind meteoblue oder Open-Meteo.</p>
+      <p>Ein Server-Job holt das Wetter einmal pro Tag pro Ort ab und stellt es dem Dashboard bereit, nicht der Browser direkt.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Warum wirkt das Wetter je nach Thema unterschiedlich?</h3></summary>
+      <p>Sonne füllt Bergseen und Schluchten, Regen füllt Thermen. Die Wetterklasse muss deshalb pro Thema gedeutet werden. Später denkbar: an Regentagen Bergsee-Budget themenübergreifend zu Wellness lenken.</p>
+    </details>
+  </section>
+
+  <section id="betrieb">
+    <h2>Daten und Betrieb</h2>
+
+    <details class="card fold">
+      <summary><h3>Woher kommen die Messwerte im Echtbetrieb?</h3></summary>
+      <p>Automatisch aus dem Quellsystem des Ortes: Parkleitsystem, Parkuhr oder Park-App, Kasse, Drehkreuz, Personen- oder Fahrzeugzähler. Nie aus manueller Eingabe. Die Rohdaten werden unverändert gespeichert.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Wer legt Kapazität und Schwellen fest?</h3></summary>
+      <p>Die Destinationen selbst, aber innerhalb fester Bandbreiten (z. B. orange 50–70 %, rot 80–95 %). Ebenso den Übernahme-Anteil als Substitut (25–75 %, siehe <a href="#anteil">Warum erhält das Substitut nur drei Viertel?</a>). Änderungen nur vor Saisonbeginn, protokolliert und von Graubünden Ferien freigegeben.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Was passiert bei fehlenden oder unplausiblen Daten?</h3></summary>
+      <p>Unplausible Werte, etwa null an einem Spitzentag oder über der Kapazität, werden markiert statt verwendet. Fehlende Daten ergeben grau, nie grün, damit kein Budget an einen Ort fliesst, über den man nichts weiss. Die Regeln für graue Orte stehen unter <a href="#grau">Was passiert bei grau?</a></p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Welche Daten braucht das Dashboard?</h3></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Datei</th><th>Inhalt</th></tr></thead>
+          <tbody>
+            <tr><td><code>orte.json</code></td><td>Orte mit Thema, Koordinaten, Kapazität, Schwellen, nächstem Substitut und Übernahme-Anteil</td></tr>
+            <tr><td><code>auslastung.json</code></td><td>Messwert und Auslastung pro Ort und Spitzentag, inkl. Prognose</td></tr>
+            <tr><td><code>kampagnen.json</code></td><td>Jede Statusänderung von Paid und Owned, mit Budget, Grund und Herkunft des Budgets</td></tr>
+            <tr><td><code>wetter.json</code></td><td>Wetter pro Ort und Spitzentag, inkl. Prognose (optional)</td></tr>
+            <tr><td><code>kantonsumriss.json</code>, <code>landesgrenze.json</code></td><td>Grenzen für die Karte (swisstopo)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Für den Echtbetrieb zeigen die Adressen oben in <code>js/app.js</code> auf die eigene Schnittstelle. Solange diese das gleiche Format liefert, muss an der Seite nichts geändert werden. Die Feldbeschreibungen stehen in der <code>README.md</code>.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Wie wird das Dashboard betrieben?</h3></summary>
+      <p>Es ist eine statische Webseite und läuft auf jedem einfachen Webhosting. Lokal braucht es einen kleinen Webserver, weil die Seite ihre Daten nachlädt; ein Doppelklick auf <code>index.html</code> genügt nicht. Im Ordner:</p>
+      <pre><code>python3 -m http.server 8000</code></pre>
+      <p>und dann <code>http://localhost:8000</code> öffnen.</p>
+    </details>
+
+    <details class="card fold">
+      <summary><h3>Nach welchem CI ist es gestaltet?</h3></summary>
+      <p>Nach dem Basis-Styleguide Online Medien graubünden (Oktober 2013): granat für Titel und Navigation, granit für Text, die Ampel in wiesengrün, sommergelb und granat, der Budgetfluss in himmelblau. Text in Arial, Titel in TheMix. Bis eine lizenzierte TheMix-Webfont vorliegt, springt Fira Sans ein.</p>
+    </details>
+  </section>
+</main>
+<script>
+(function () {
+  const alle = [...document.querySelectorAll('details')];
+  const btn = document.getElementById('alle');
+  const sync = () => { btn.textContent = alle.every((d) => d.open) ? 'Alle zuklappen' : 'Alle aufklappen'; };
+  btn.addEventListener('click', () => { const auf = !alle.every((d) => d.open); alle.forEach((d) => { d.open = auf; }); sync(); });
+  alle.forEach((d) => d.addEventListener('toggle', sync));
+  sync();
+  // Links auf eine Frage (#grau) klappen sie auf
+  const oeffne = () => { const d = location.hash && document.querySelector('details' + location.hash); if (d) { d.open = true; d.scrollIntoView(); } };
+  window.addEventListener('hashchange', oeffne);
+  oeffne();
+})();
+</script>
+</body>
+</html>
