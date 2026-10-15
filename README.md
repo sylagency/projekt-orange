@@ -29,7 +29,7 @@ Abhängigkeiten aus dem Netz: d3 7.9.0 (cdnjs) und die Schrift Fira Sans (Google
 
 Nach dem Basis-Styleguide Online Medien graubünden (Oktober 2013): Farben granit, granat, sommergelb, wiesengrün und himmelblau als Variablen oben in `css/style.css`, Text in Arial, Titel in TheMix. Solange keine lizenzierte TheMix-Webfont eingebunden ist, springt Fira Sans ein; wird TheMix per `@font-face` eingebunden, greift sie automatisch. Der Dunkelmodus ist im Styleguide nicht definiert und aus den Granit-Tönen abgeleitet.
 
-Nach Änderungen an CSS oder JS die Versionsnummer (`?v=15`, in `index.html` und `faq.html`) in `index.html` erhöhen, damit Browser nicht die alte Datei aus dem Cache nehmen.
+Nach Änderungen an CSS oder JS die Versionsnummer (`?v=16`, in `index.html` und `faq.html`) in `index.html` erhöhen, damit Browser nicht die alte Datei aus dem Cache nehmen.
 
 ## Lokal starten
 

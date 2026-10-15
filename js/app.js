@@ -16,7 +16,7 @@ const fmtShort = new Intl.DateTimeFormat('de-CH', { day: 'numeric', month: 'shor
 const fmtNum = new Intl.NumberFormat('de-CH');
 const D = (s) => new Date(s + 'T00:00:00Z');
 const SC = { 'grün': 'var(--ok)', orange: 'var(--warn)', rot: 'var(--bad)' };
-const KC = { aktiv: 'var(--ok)', reduziert: 'var(--warn)', gestoppt: 'var(--bad)', pausiert: 'var(--muted)', beendet: 'var(--muted)' };
+const KC = { aktiv: 'var(--ok)', reduziert: 'var(--warn)', gestoppt: 'var(--bad)', pausiert: 'var(--bad)', beendet: 'var(--chart-muted)' };
 const simBadge = () => Object.assign(document.createElement('span'), { className: 'badge sim', textContent: 'Simulation' });
 const $ = (id) => document.getElementById(id);
 
@@ -76,6 +76,12 @@ function pill(text, color) {
   i.className = 'dot';
   i.style.background = color;
   s.append(i, document.createTextNode(text));
+  return s;
+}
+// Status einer Kampagne; „pausiert“ als roter Ring, damit es nicht wie grau (keine Daten) aussieht
+function statusPill(status) {
+  const s = pill(status, KC[status]);
+  if (status === 'pausiert') { const i = s.firstChild; i.style.background = 'transparent'; i.style.boxShadow = 'inset 0 0 0 2px var(--bad)'; }
   return s;
 }
 function tipShow(tip, box, ev, head, lines) {
@@ -273,7 +279,8 @@ function drawCurve(el, rows, subs, ort, hiId, events, datum, dates, wx) {
     const cx = x(d) + (i - (evs.length - 1) / 2) * 11;
     const paid = e.art === 'Paid';
     svg.append('path').attr('d', d3.symbol(paid ? d3.symbolTriangle : d3.symbolCircle, paid ? 60 : 40)())
-      .attr('transform', `translate(${cx},${m.top - 14}) rotate(${paid ? 180 : 0})`).style('fill', KC[e.status] || 'var(--muted)');
+      .attr('transform', `translate(${cx},${m.top - 14}) rotate(${paid ? 180 : 0})`)
+      .style('fill', e.status === 'pausiert' ? 'none' : KC[e.status] || 'var(--muted)').style('stroke', e.status === 'pausiert' ? 'var(--bad)' : 'none').attr('stroke-width', 2);
   });
   const tip = $('curvetip'), box = el.parentElement;
   const byRow = Object.fromEntries(rows.map((r) => [r.datum, r]));
@@ -420,7 +427,7 @@ function render() {
     const info = document.createElement('div');
     info.className = 'note';
     info.textContent = (art === 'paid' && r.budget_chf_woche ? `CHF ${fmtNum.format(r.budget_chf_woche)} pro Woche. ` : '') + r.hinweis;
-    box.replaceChildren(pill(r.status, KC[r.status]), ...(r.sim ? [simBadge()] : []), info);
+    box.replaceChildren(statusPill(r.status), ...(r.sim ? [simBadge()] : []), info);
   }
 
   // Substitutionskette als Entscheid in Sätzen: das Budget wandert bis zum ersten grünen Ort
@@ -498,17 +505,18 @@ function render() {
     tr.addEventListener('click', go);
     tr.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') go(); });
     const stc = document.createElement('span');
-    stc.append(pill(r.status, KC[r.status]), ...(r.sim ? [simBadge()] : []));
+    stc.append(statusPill(r.status), ...(r.sim ? [simBadge()] : []));
     tr.append(td(r.ort), td(r.art), td(stc), td(fmtNum.format(r.budget_chf_woche), 'r'), td(fmtShort.format(D(r.datum_ab)), 'hide-sm'), td(r.hinweis, 'hide-sm'));
     return tr;
   }));
 
   // Verlauf des gewählten Ortes
   $('v-name').textContent = ort.name;
+  $('v-note').textContent = 'Alle Entscheide für diesen Ort in der Saison. Blass: Entscheide nach dem gewählten Tag.' + (kampagnen.some((r) => r.ort_id === ortId && r.sim) ? ' Zeilen mit „Simulation“ sind keine getroffenen Entscheide, sondern was die Regeln an Prognosetagen vorschlagen würden.' : '');
   // Regelprüfung: gespeicherte Entscheide gegen die Regeln
   const abw = DB.abweichungen;
   const pr = $('pruefung');
-  if (!abw.length) { pr.className = 'pruefung ok'; pr.textContent = `✓ Regelprüfung: Alle gespeicherten Entscheide bis ${fmtShort.format(D(stand))} entsprechen den Regeln. Spätere Zeilen sind Simulation.`; }
+  if (!abw.length) { pr.className = 'pruefung ok'; pr.textContent = `✓ Regelprüfung: Alle gespeicherten Entscheide bis ${fmtShort.format(D(stand))} entsprechen den Regeln.`; }
   else {
     const hier = abw.filter((x) => x.ort_id === ortId);
     pr.className = 'pruefung warn';
@@ -523,7 +531,7 @@ function render() {
     tr.addEventListener('click', go);
     tr.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') go(); });
     const stv = document.createElement('span');
-    stv.append(pill(r.status, KC[r.status]), ...(r.sim ? [simBadge()] : []));
+    stv.append(statusPill(r.status), ...(r.sim ? [simBadge()] : []));
     tr.append(td(fmtShort.format(D(r.datum_ab))), td(r.art), td(stv), td(fmtNum.format(r.budget_chf_woche), 'r'), td(r.hinweis));
     return tr;
   }));
