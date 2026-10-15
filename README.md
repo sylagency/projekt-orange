@@ -43,7 +43,7 @@ und `http://localhost:8000` öffnen. Auf jedem Webhosting (statisch genügt) lä
 
 ### Veröffentlichen mit GitHub Pages
 
-Das Repository auf GitHub hochladen, dann unter *Settings → Pages* „Deploy from a branch“, Branch `main`, Ordner `/ (root)` wählen. Nach ein bis zwei Minuten ist die Seite unter `https://<konto>.github.io/<repository>/` erreichbar. Die Datei `.nojekyll` sorgt dafür, dass GitHub die Dateien unverändert ausliefert.
+Das Repository auf GitHub hochladen, dann unter *Settings → Pages* „Deploy from a branch“, Branch `main`, Ordner `/ (root)` wählen. Nach ein bis zwei Minuten ist die Seite unter `https://<konto>.github.io/<repository>/` erreichbar. Live: **https://projekt-orange.digital** (eigene Domain über die Datei `CNAME`, DNS bei Swizzonic: A-Einträge auf GitHub Pages, `www` als CNAME auf `sylagency.github.io`). Die Datei `.nojekyll` sorgt dafür, dass GitHub die Dateien unverändert ausliefert.
 
 GitHub Pages ist öffentlich: Wer den Link kennt, sieht die Seite. `robots.txt` und `noindex` halten Suchmaschinen fern, ersetzen aber keinen Zugriffsschutz. Für echte Daten braucht es ein Hosting mit Login.
 
